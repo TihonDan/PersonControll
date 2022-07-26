@@ -13,14 +13,15 @@ namespace PersonControll.Controllers
 {
     public class SearchController : Controller
     {
-        // GET: Search
-        public ActionResult GetData(string surname, string firstname, string lastname, DateTime firstBirthday, DateTime lastBirthday)
+        ///GET: Search
+        public ActionResult GetData(string surname, string firstname, string lastname, string firstBirthday, string lastBirthday)
         {
+            
             var cont = new WindsorContainer();
             cont.Install(new CastleWindConf());
             IGetTable connect = cont.Resolve<IGetTable>();
             ISQL sql = cont.Resolve<ISQL>();
-            List<Person> newCitizens = connect.GetDataTable(sql.GetAllColumn(surname, firstname, lastname, firstBirthday, lastBirthday));
+            List<Person> newCitizens = connect.GetDataTable(sql.GetAllColumn(surname, firstname, lastname, DateTime.Parse(firstBirthday), DateTime.Parse(lastBirthday)));
             ResPerson resResponse = new ResPerson();
             if (newCitizens.Count > 0)
             {

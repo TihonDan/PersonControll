@@ -8,10 +8,11 @@ namespace PersonControll.Connection.SQL
 {
     public class SQL : ISQL
     {
-        string NameTable = "persons";
+        string NameTable = "customers";
 
         public SqlRes CreateColumn(string surNameText, string nameText, string fatherNameText, DateTime birthdayDate)
         {
+
             string sql = "INSERT INTO " + NameTable + " (surname, firstname, lastname, birthday)" +
                          "VALUES (?,?,?,?)";
 
@@ -42,6 +43,13 @@ namespace PersonControll.Connection.SQL
             return sqlRes;
         }
 
+        public string GetPersonAll()
+        {
+            string sql = "SELECT * FROM  " + NameTable;
+
+            return sql;
+        }
+
         public string GetAllColumn(string surname, string firstname, string lastname, DateTime firstBirthday, DateTime lastBirthday)
         {
             string sql = "SELECT  id_person, surname, firstname, lastname, birthday FROM  " + NameTable;
@@ -49,37 +57,56 @@ namespace PersonControll.Connection.SQL
             if (surname != "" | firstname != "" | lastname != "" | firstBirthday != DateTime.MinValue | lastBirthday != DateTime.MinValue)
             {
                 sql = sql + " WHERE ";
-                if (surname != "")
+                if (surname.Contains("*"))
                 {
-                    sql = sql + " surname = '" + surname + "'";
+                    sql = sql + $" surname = '{surname.Trim(new Char[] { '*' })}'";
                     isNotFrirst = true;
                 }
-                if (firstname != "")
+                else 
+                {
+                    sql = sql + $" surname like '%{surname}%'";
+                    isNotFrirst = true;
+                }
+                if (firstname.Contains("*"))
                 {
                     if (isNotFrirst)
                         sql = sql + " AND";
-                    sql = sql + " firstname = '" + firstname + "'";
+                    sql = sql + $" firstname = '{firstname.Trim(new Char[] { '*' })}'";
                     isNotFrirst = true;
                 }
-                if (lastname != "")
+                else
                 {
                     if (isNotFrirst)
                         sql = sql + " AND";
-                    sql = sql + " lastname = '" + lastname + "'";
+                    sql = sql + $" firstname like '%{firstname}%'";
+                    isNotFrirst = true;
+                }
+                if (lastname.Contains("*"))
+                {
+                    if (isNotFrirst)
+                        sql = sql + " AND";
+                    sql = sql + $" lastname = '{lastname.Trim(new Char[] { '*' })}'";
+                    isNotFrirst = true;
+                }
+                else
+                {
+                    if (isNotFrirst)
+                        sql = sql + " AND";
+                    sql = sql + $" lastname like '%{lastname}%'";
                     isNotFrirst = true;
                 }
                 if (firstBirthday != DateTime.MinValue)
                 {
                     if (isNotFrirst)
                         sql = sql + " AND";
-                    sql = sql + " birthday > '" + firstBirthday.Day + "." + firstBirthday.Month + "." + firstBirthday.Year + "'";
+                    sql = sql + " birthday >= '" + firstBirthday.Day + "." + firstBirthday.Month + "." + firstBirthday.Year + "'";
                     isNotFrirst = true;
                 }
                 if (lastBirthday != DateTime.MinValue)
                 {
                     if (isNotFrirst)
                         sql = sql + " and";
-                    sql = sql + " birthday < '" + lastBirthday.Day + "." + lastBirthday.Month + "." + lastBirthday.Year + "'";
+                    sql = sql + " birthday <= '" + lastBirthday.Day + "." + lastBirthday.Month + "." + lastBirthday.Year + "'";
                     isNotFrirst = true;
                 }
 
@@ -91,7 +118,7 @@ namespace PersonControll.Connection.SQL
         {
             string sql = "UPDATE " + NameTable + " SET (surname, firstname, lastname, birthday) = " +
                          "(?,?,?,?)" +
-                         "WHERE id_person = ?";
+                         "WHERE id_person = " + Convert.ToString(id);
 
             SqlRes sqlRes = new SqlRes();
             sqlRes.sql = sql;

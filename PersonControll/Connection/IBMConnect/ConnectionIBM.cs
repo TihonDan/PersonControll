@@ -1,4 +1,5 @@
-﻿using IBM.Data.Informix;
+﻿using IBM.Data;
+using IBM.Data.Informix;
 using PersonControll.Connection.IBMConnect.Interface;
 using PersonControll.Models;
 using System;
