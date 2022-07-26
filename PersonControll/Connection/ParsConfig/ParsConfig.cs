@@ -24,7 +24,7 @@ namespace PersonControll.Connection.ParsConfig
         /// </summary>
         public void ParseConfiguration()
         {
-            ConfigurationConnect = "Database=danilatest; Host=192.168.224.27; Server=ol_test; Service=1527; Client Locale=ru_RU.CP1251; Database Locale=ru_RU.915; Password=info;";
+            ConfigurationConnect = "Database=barstest; Host=192.168.224.27; Server=ol_test; Service=1527;CLIENT_LOCALE=ru_RU.CP1251; DB_LOCALE=ru_RU.915; Protocol=olsoctcp; UID=informix;Password=info;";
         }
     }
 }

@@ -17,6 +17,7 @@ namespace PersonControll
             {
                 filters.Add(new HandleErrorAttribute());
             }
+
         }
         public class RouteConfig
         {
